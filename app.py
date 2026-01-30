@@ -67,8 +67,9 @@ elif menu == "Enter Data":
 # ===============================
 
 elif menu == "Generate Timetable":
+
     st.title("📅 Final Timetable: Complete Lab Coverage")
-    # random.seed(42)  # Comment this out with # to stop locking
+    random.seed(42)  # Comment this out with # to stop locking
 
     if mapping_df.empty:
         st.warning("⚠ Please add subject mappings first!")
@@ -87,7 +88,7 @@ elif menu == "Generate Timetable":
 
     def style_timetable(val):
         if "\n/\n" in str(val):
-            return 'background-color: #D5F5E3; color: #145A32; font-weight: bold; white-space: pre-wrap; text-align: center;'
+           return 'color: #D5F5E3; font-weight: 700; white-space: pre-wrap; text-align: center;'
         if any(x in str(val) for x in ["B\nR\nE\nA\nK", "L\nU\nN\nC\nH"]):
             return 'font-weight: bold; text-align: center; white-space: pre-wrap;'
         return 'text-align: center;'
