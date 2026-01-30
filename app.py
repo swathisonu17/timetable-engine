@@ -69,7 +69,7 @@ elif menu == "Enter Data":
 elif menu == "Generate Timetable":
 
     st.title("📅 Final Timetable: Complete Lab Coverage")
-    random.seed(42)  # Comment this out with # to stop locking
+    # random.seed(42)  # Comment this out with # to stop locking
 
     if mapping_df.empty:
         st.warning("⚠ Please add subject mappings first!")
@@ -151,17 +151,39 @@ elif menu == "Generate Timetable":
 
         # --- THEORY FILLING ---
         theory_subjects = sec_data[sec_data["Type"] == "Theory"].to_dict('records')
-        for theory in theory_subjects:
-            needed = 3
-            for d in days:
-                if needed <= 0: break
-                random.shuffle(teaching_slots)
-                for s in teaching_slots:
-                    if tt.at[d, s] == "" and (theory['Faculty'], d, s) not in st.session_state.global_faculty_busy:
-                        if not any(theory['Subject'] in str(cell) for cell in tt.loc[d]):
-                            tt.at[d, s] = f"{theory['Subject']}\n({theory['Faculty']})"
-                            st.session_state.global_faculty_busy.add((theory['Faculty'], d, s))
-                            needed -= 1; break
+        # for theory in theory_subjects:
+        #     needed = 3
+        #     for d in days:
+        #         if needed <= 0: break
+        #         random.shuffle(teaching_slots)
+        #         for s in teaching_slots:
+        #             if tt.at[d, s] == "" and (theory['Faculty'], d, s) not in st.session_state.global_faculty_busy:
+        #                 if not any(theory['Subject'] in str(cell) for cell in tt.loc[d]):
+        #                     tt.at[d, s] = f"{theory['Subject']}\n({theory['Faculty']})"
+        #                     st.session_state.global_faculty_busy.add((theory['Faculty'], d, s))
+        #                     needed -= 1; break
+        # We'll try to fill every teaching slot available in the week
+
+        
+        for d in days:
+            # Shuffle slots every day for variety
+            daily_slots = teaching_slots.copy()
+            random.shuffle(daily_slots)
+            
+            for s in daily_slots:
+                # If slot is empty, try to find a faculty who isn't busy
+                if tt.at[d, s] == "":
+                    # Shuffle subjects so the same one doesn't always get the first empty slot
+                    random.shuffle(theory_subjects)
+                    
+                    for theory in theory_subjects:
+                        # CHECK 1: Is the teacher free globally?
+                        # CHECK 2: Has the subject already been taught TODAY?
+                        if (theory['Faculty'], d, s) not in st.session_state.global_faculty_busy:
+                            if not any(theory['Subject'] in str(cell) for cell in tt.loc[d]):
+                                tt.at[d, s] = f"{theory['Subject']}\n({theory['Faculty']})"
+                                st.session_state.global_faculty_busy.add((theory['Faculty'], d, s))
+                                break # Move to the next empty time slot
 
         st.dataframe(tt.style.applymap(style_timetable), use_container_width=True)
   
