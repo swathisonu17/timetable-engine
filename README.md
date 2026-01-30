@@ -29,7 +29,7 @@ This project generates **faculty-availability based, clash-free timetables** for
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 timetable-engine/
 │── app.py # Main Streamlit app
@@ -40,7 +40,7 @@ timetable-engine/
 │── README.md # Project documentation
 │── .gitignore # Ignored files (venv, pycache)
 
-## 🚀 How to Run Locally
+##  How to Run Locally
 
 1. **Clone the repository**
 ```bash
