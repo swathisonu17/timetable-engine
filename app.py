@@ -1,6 +1,4 @@
 
-
-
 import os
 import streamlit as st
 import pandas as pd
@@ -38,7 +36,7 @@ st.sidebar.title("🗂 Timetable Engine")
 menu = st.sidebar.radio("Menu", ["Dashboard","Enter Data","Generate Timetable"])
 
 if menu == "Dashboard":
-    st.title("📊 Dashboard")
+    st.title("Dashboard")
     c1,c2,c3,c4 = st.columns(4)
     c1.metric("Faculty", len(faculty_df))
     c2.metric("Subjects", len(subject_df))
@@ -46,7 +44,7 @@ if menu == "Dashboard":
     c4.metric("Mappings", len(mapping_df))
 
 elif menu == "Enter Data":
-    st.title("📝 Data Entry")
+    st.title(" Data Entry")
     # ... (Your existing Form logic for Faculty, Subject, Section, Semester, and Mapping)
     # [KEEP YOUR EXISTING FORM CODE HERE]
     with st.form("mapping"):
@@ -68,7 +66,7 @@ elif menu == "Enter Data":
 
 elif menu == "Generate Timetable":
 
-    st.title("📅 Final Timetable: Complete Lab Coverage")
+    st.title(" Final Timetable: Complete Lab Coverage")
     # random.seed(42)  # Comment this out with # to stop locking
 
     if mapping_df.empty:
@@ -96,7 +94,7 @@ elif menu == "Generate Timetable":
     sections = sorted(mapping_df[mapping_df["Semester"] == selected_sem]["Section"].unique())
     
     for section in sections:
-        st.subheader(f"📍 Timetable: {section}")
+        st.subheader(f"Timetable: {section}")
         tt = pd.DataFrame("", index=days, columns=time_columns)
         
         # 2. Place labels only once in the middle of the week
@@ -189,7 +187,7 @@ elif menu == "Generate Timetable":
   
 
     # # Workload Summary
-    st.header("📊 Faculty Workload Summary")
+    st.header("Faculty Workload Summary")
     workload_data = []
 
     # Ensure the name here (f) matches the name inside the sum function
